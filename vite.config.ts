@@ -12,4 +12,9 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // On Vercel, build the nitro server with the Vercel preset so SSR and server
+  // functions (e.g. registerUser) deploy as Vercel functions and write the
+  // Build Output API to .vercel/output. Locally this stays undefined, so the
+  // normal Vite build is unchanged. (VERCEL=1 is set in Vercel's build env.)
+  nitro: process.env.VERCEL ? { preset: "vercel" } : undefined,
 });
