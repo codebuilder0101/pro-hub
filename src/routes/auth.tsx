@@ -59,11 +59,11 @@ function AuthPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success("Conta criada! Você já está conectado.");
-        navigate({ to: "/" });
+        navigate({ to: "/painel" });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate({ to: "/" });
+        navigate({ to: "/painel" });
       }
     } catch (err) {
       toast.error(translateAuthError(err));

@@ -4,8 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { IdCard, Kanban, AlertTriangle, CheckCircle2, LineChart, ArrowRight } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/")({
-  head: () => ({ meta: [{ title: "Início — SGE" }] }),
+export const Route = createFileRoute("/_authenticated/painel")({
+  head: () => ({ meta: [{ title: "Painel — SGE" }] }),
   component: HomePage,
 });
 

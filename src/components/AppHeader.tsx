@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 const nav = [
-  { to: "/", label: "Início", icon: Home },
+  { to: "/painel", label: "Início", icon: Home },
   { to: "/funcionarios", label: "Funcionários", icon: IdCard },
   { to: "/projetos", label: "Projetos", icon: Kanban },
   { to: "/relatorios", label: "Relatórios", icon: LineChart },
@@ -36,7 +36,7 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 glass">
       <div className="container mx-auto flex h-16 items-center gap-3 px-4">
-        <Link to="/" className="flex items-center gap-2.5 shrink-0">
+        <Link to="/painel" className="flex items-center gap-2.5 shrink-0">
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-gradient text-white shadow-sm shadow-primary/30">
             <Building2 className="h-5 w-5" />
           </span>
@@ -51,7 +51,7 @@ export function AppHeader() {
             <Link
               key={item.to}
               to={item.to}
-              activeOptions={{ exact: item.to === "/" }}
+              activeOptions={{ exact: item.to === "/painel" }}
               className="flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground [&.active]:bg-accent [&.active]:text-accent-foreground [&.active]:shadow-sm"
             >
               <item.icon className="h-4 w-4" />
