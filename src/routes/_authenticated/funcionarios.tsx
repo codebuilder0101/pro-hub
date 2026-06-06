@@ -90,7 +90,11 @@ function EmployeesPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-4xl font-semibold tracking-tight">Lista de Funcionários</h1>
+      <div>
+        <p className="text-sm font-medium text-primary">Equipe</p>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">Funcionários</h1>
+        <p className="mt-1.5 text-muted-foreground">Cadastre e gerencie os membros da sua equipe.</p>
+      </div>
 
       <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
         <div className="relative w-full max-w-sm">
@@ -102,10 +106,10 @@ function EmployeesPage() {
         </Button>
       </div>
 
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden p-0">
         <Table>
           <TableHeader>
-            <TableRow>
+            <TableRow className="bg-muted/50 hover:bg-muted/50 [&_th]:text-xs [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-wide [&_th]:text-muted-foreground">
               <TableHead className="w-12">#</TableHead>
               <TableHead>Nome Completo</TableHead>
               <TableHead>Departamento</TableHead>

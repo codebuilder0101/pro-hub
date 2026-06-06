@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Building2, Home, IdCard, Kanban, LineChart, LogOut, User } from "lucide-react";
+import { Building2, Home, IdCard, Kanban, LineChart, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -31,32 +31,45 @@ export function AppHeader() {
     navigate({ to: "/auth", replace: true });
   }
 
+  const initial = (username || "?").charAt(0).toUpperCase();
+
   return (
-    <header className="bg-primary text-primary-foreground shadow-md">
-      <div className="container mx-auto flex flex-wrap items-center gap-4 px-4 py-3">
-        <Link to="/" className="flex items-center gap-2 font-semibold text-base mr-4">
-          <Building2 className="h-5 w-5" />
-          <span>Sistema de Gerenciamento Empresarial</span>
+    <header className="sticky top-0 z-40 border-b border-border/70 glass">
+      <div className="container mx-auto flex h-16 items-center gap-3 px-4">
+        <Link to="/" className="flex items-center gap-2.5 shrink-0">
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-gradient text-white shadow-sm shadow-primary/30">
+            <Building2 className="h-5 w-5" />
+          </span>
+          <span className="hidden flex-col leading-none sm:flex">
+            <span className="text-sm font-bold tracking-tight">SGE</span>
+            <span className="text-[11px] text-muted-foreground">Gerenciamento Empresarial</span>
+          </span>
         </Link>
-        <nav className="flex items-center gap-1 flex-1">
+
+        <nav className="flex flex-1 items-center gap-1 overflow-x-auto px-1">
           {nav.map((item) => (
             <Link
               key={item.to}
               to={item.to}
               activeOptions={{ exact: item.to === "/" }}
-              className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium hover:bg-white/10 transition-colors [&.active]:bg-white/15"
+              className="flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground [&.active]:bg-accent [&.active]:text-accent-foreground [&.active]:shadow-sm"
             >
               <item.icon className="h-4 w-4" />
-              {item.label}
+              <span className="hidden md:inline">{item.label}</span>
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-2">
-          <span className="flex items-center gap-2 rounded-md bg-foreground/80 px-3 py-1.5 text-sm">
-            <User className="h-4 w-4" /> Olá, {username}!
-          </span>
-          <Button variant="destructive" size="sm" onClick={handleSignOut} className="gap-1.5">
-            <LogOut className="h-4 w-4" /> Sair
+
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="hidden items-center gap-2 rounded-full border border-border/70 bg-card/60 py-1 pl-1 pr-3 sm:flex">
+            <span className="grid h-7 w-7 place-items-center rounded-full bg-brand-gradient text-xs font-bold text-white">
+              {initial}
+            </span>
+            <span className="text-sm font-medium">{username}</span>
+          </div>
+          <Button variant="ghost" size="sm" onClick={handleSignOut} className="gap-1.5 text-muted-foreground hover:text-destructive">
+            <LogOut className="h-4 w-4" />
+            <span className="hidden sm:inline">Sair</span>
           </Button>
         </div>
       </div>

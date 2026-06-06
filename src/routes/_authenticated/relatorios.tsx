@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { IdCard, Kanban, AlertTriangle } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/relatorios")({
   head: () => ({ meta: [{ title: "Relatórios — SGE" }] }),
@@ -43,24 +44,31 @@ function ReportsPage() {
   }));
 
   const stats = [
-    { label: "Funcionários Ativos", value: active, bg: "bg-primary" },
-    { label: "Total de Tarefas", value: tasks.length, bg: "bg-info" },
-    { label: "Tarefas Atrasadas", value: overdue, bg: "bg-destructive" },
+    { label: "Funcionários Ativos", value: active, tint: "bg-primary/10 text-primary", icon: IdCard, desc: "Total de funcionários ativos." },
+    { label: "Total de Tarefas", value: tasks.length, tint: "bg-info/10 text-info", icon: Kanban, desc: "Total de tarefas cadastradas." },
+    { label: "Tarefas Atrasadas", value: overdue, tint: "bg-destructive/10 text-destructive", icon: AlertTriangle, desc: "Tarefas atrasadas e não concluídas." },
   ];
 
   return (
     <div className="space-y-8">
-      <h1 className="text-4xl font-semibold tracking-tight">Relatórios Globais</h1>
+      <div>
+        <p className="text-sm font-medium text-primary">Análises</p>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">Relatórios</h1>
+        <p className="mt-1.5 text-muted-foreground">Métricas globais de equipe e tarefas.</p>
+      </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         {stats.map((s) => (
-          <Card key={s.label} className="overflow-hidden pt-0 gap-0">
-            <CardHeader className={`${s.bg} text-primary-foreground py-3`}>
-              <CardTitle className="text-sm font-medium">{s.label}</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-6">
-              <div className="text-4xl font-semibold">{s.value}</div>
-              <p className="text-sm text-muted-foreground mt-1">{s.label === "Total de Tarefas" ? "Total de tarefas cadastradas." : s.label === "Funcionários Ativos" ? "Total de funcionários ativos." : "Tarefas atrasadas e não concluídas."}</p>
+          <Card key={s.label} className="card-hover">
+            <CardContent className="p-5">
+              <div className="flex items-center justify-between gap-4">
+                <p className="text-sm font-medium text-muted-foreground">{s.label}</p>
+                <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${s.tint}`}>
+                  <s.icon className="h-5 w-5" />
+                </span>
+              </div>
+              <div className="mt-2 text-3xl font-bold tracking-tight">{s.value}</div>
+              <p className="mt-1 text-sm text-muted-foreground">{s.desc}</p>
             </CardContent>
           </Card>
         ))}

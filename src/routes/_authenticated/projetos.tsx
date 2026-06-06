@@ -108,7 +108,11 @@ function KanbanPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-4xl font-semibold tracking-tight">Quadro Kanban</h1>
+      <div>
+        <p className="text-sm font-medium text-primary">Projetos</p>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">Quadro Kanban</h1>
+        <p className="mt-1.5 text-muted-foreground">Organize e acompanhe o andamento das tarefas.</p>
+      </div>
 
       <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
         <div className="relative w-full max-w-sm">
@@ -121,10 +125,16 @@ function KanbanPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        {grouped.map((col) => (
-          <div key={col.value} className="space-y-3">
-            <div className="bg-primary text-primary-foreground rounded-md px-4 py-3 font-medium shadow-sm">
-              {col.label} ({col.items.length})
+        {grouped.map((col) => {
+          const dot = col.value === "done" ? "bg-success" : col.value === "doing" ? "bg-info" : "bg-muted-foreground";
+          return (
+          <div key={col.value} className="space-y-3 rounded-2xl bg-muted/40 p-3">
+            <div className="flex items-center justify-between rounded-xl border bg-card px-4 py-3 shadow-sm">
+              <span className="flex items-center gap-2 font-semibold">
+                <span className={`h-2.5 w-2.5 rounded-full ${dot}`} />
+                {col.label}
+              </span>
+              <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">{col.items.length}</span>
             </div>
             <div className="space-y-2 min-h-32">
               {col.items.map((t) => {
@@ -164,7 +174,8 @@ function KanbanPage() {
               )}
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
