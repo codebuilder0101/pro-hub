@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { IdCard, Kanban, AlertTriangle, CheckCircle2, LineChart, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/painel")({
@@ -10,7 +11,7 @@ export const Route = createFileRoute("/_authenticated/painel")({
 });
 
 function HomePage() {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["dashboard-summary"],
     queryFn: async () => {
       const today = new Date().toISOString().slice(0, 10);
@@ -56,7 +57,11 @@ function HomePage() {
             <CardContent className="flex items-center justify-between gap-4 p-5">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">{c.label}</p>
-                <p className="mt-2 text-3xl font-bold tracking-tight">{c.value}</p>
+                {isLoading ? (
+                  <Skeleton className="mt-2 h-9 w-14" />
+                ) : (
+                  <p className="mt-2 text-3xl font-bold tracking-tight">{c.value}</p>
+                )}
               </div>
               <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${c.tint}`}>
                 <c.icon className="h-6 w-6" />

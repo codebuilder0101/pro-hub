@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   Building2,
   IdCard,
@@ -70,14 +71,15 @@ function LandingPage() {
             <a href="#recursos" className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">Recursos</a>
             <a href="#como-funciona" className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">Como funciona</a>
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            <ThemeToggle />
             {authed ? (
               <Button asChild className="shadow-sm shadow-primary/25">
                 <Link to="/painel">Ir para o painel</Link>
               </Button>
             ) : (
               <>
-                <Button asChild variant="ghost">
+                <Button asChild variant="ghost" className="hidden sm:inline-flex">
                   <Link to="/auth">Entrar</Link>
                 </Button>
                 <Button asChild className="shadow-sm shadow-primary/25">

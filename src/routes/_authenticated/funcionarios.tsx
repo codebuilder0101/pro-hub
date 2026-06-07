@@ -8,9 +8,11 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Pencil, Eye, Trash2, IdCard, Search } from "lucide-react";
+import { Pencil, Eye, Trash2, IdCard, Search, Users } from "lucide-react";
 import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ConfirmDelete } from "@/components/ConfirmDelete";
 
 type Employee = {
   id: string;
@@ -38,7 +40,7 @@ function EmployeesPage() {
   const [editing, setEditing] = useState<Partial<Employee>>(empty);
   const [viewing, setViewing] = useState<Employee | null>(null);
 
-  const { data: employees = [] } = useQuery({
+  const { data: employees = [], isLoading } = useQuery({
     queryKey: ["employees"],
     queryFn: async () => {
       const { data, error } = await supabase.from("employees").select("*").order("created_at", { ascending: false });
@@ -121,14 +123,29 @@ function EmployeesPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filtered.length === 0 && (
+            {isLoading &&
+              Array.from({ length: 5 }).map((_, i) => (
+                <TableRow key={`sk-${i}`}>
+                  <TableCell colSpan={8}>
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            {!isLoading && filtered.length === 0 && (
               <TableRow>
-                <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
-                  Nenhum funcionário cadastrado.
+                <TableCell colSpan={8} className="py-12 text-center">
+                  <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                    <span className="grid h-12 w-12 place-items-center rounded-full bg-muted">
+                      <Users className="h-6 w-6" />
+                    </span>
+                    <p className="font-medium">Nenhum funcionário encontrado</p>
+                    <p className="text-sm">Cadastre o primeiro membro da sua equipe.</p>
+                  </div>
                 </TableCell>
               </TableRow>
             )}
-            {filtered.map((e, i) => (
+            {!isLoading &&
+              filtered.map((e, i) => (
               <TableRow key={e.id} className="odd:bg-muted/30">
                 <TableCell className="font-medium">{i + 1}</TableCell>
                 <TableCell>{e.full_name}</TableCell>
@@ -149,9 +166,16 @@ function EmployeesPage() {
                     <Button size="icon" className="rounded-full h-8 w-8 bg-info hover:bg-info/90 text-info-foreground" onClick={() => { setViewing(e); setViewOpen(true); }}>
                       <Eye className="h-3.5 w-3.5" />
                     </Button>
-                    <Button size="icon" variant="destructive" className="rounded-full h-8 w-8" onClick={() => { if (confirm("Remover este funcionário?")) remove.mutate(e.id); }}>
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
+                    <ConfirmDelete
+                      title="Remover funcionário?"
+                      description={`"${e.full_name}" será removido permanentemente.`}
+                      onConfirm={() => remove.mutate(e.id)}
+                      trigger={
+                        <Button size="icon" variant="destructive" className="rounded-full h-8 w-8">
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      }
+                    />
                   </div>
                 </TableCell>
               </TableRow>

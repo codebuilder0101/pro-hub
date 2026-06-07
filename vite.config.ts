@@ -17,4 +17,21 @@ export default defineConfig({
   // Build Output API to .vercel/output. Locally this stays undefined, so the
   // normal Vite build is unchanged. (VERCEL=1 is set in Vercel's build env.)
   nitro: process.env.VERCEL ? { preset: "vercel" } : undefined,
+  // Split heavy third-party libraries into separate cacheable chunks so the
+  // main bundle stays smaller and changes to app code don't bust vendor caches.
+  vite: {
+    build: {
+      chunkSizeWarningLimit: 900,
+      rollupOptions: {
+        output: {
+          manualChunks(id: string) {
+            if (!id.includes("node_modules")) return;
+            if (id.includes("recharts") || id.includes("/d3-")) return "charts";
+            if (id.includes("@supabase")) return "supabase";
+            if (id.includes("@radix-ui")) return "radix";
+          },
+        },
+      },
+    },
+  },
 });

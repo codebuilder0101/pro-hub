@@ -3,6 +3,7 @@ import { Building2, Home, IdCard, Kanban, LineChart, LogOut } from "lucide-react
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useEffect, useState } from "react";
 
 const nav = [
@@ -60,13 +61,17 @@ export function AppHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2 shrink-0">
-          <div className="hidden items-center gap-2 rounded-full border border-border/70 bg-card/60 py-1 pl-1 pr-3 sm:flex">
+        <div className="flex items-center gap-1.5 shrink-0">
+          <ThemeToggle />
+          <Link
+            to="/perfil"
+            className="hidden items-center gap-2 rounded-full border border-border/70 bg-card/60 py-1 pl-1 pr-3 transition-colors hover:bg-accent sm:flex"
+          >
             <span className="grid h-7 w-7 place-items-center rounded-full bg-brand-gradient text-xs font-bold text-white">
               {initial}
             </span>
             <span className="text-sm font-medium">{username}</span>
-          </div>
+          </Link>
           <Button variant="ghost" size="sm" onClick={handleSignOut} className="gap-1.5 text-muted-foreground hover:text-destructive">
             <LogOut className="h-4 w-4" />
             <span className="hidden sm:inline">Sair</span>
